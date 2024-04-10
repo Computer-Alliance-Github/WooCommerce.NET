@@ -281,7 +281,11 @@ namespace WooCommerceNET
                 if (webResponseFilter != null)
                     webResponseFilter.Invoke((HttpWebResponse)wr);
 
-                return await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
+                var stringStream = await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
+                //Console.WriteLine(stringStream);
+                return stringStream;
+
+                //return await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
             }
             catch (WebException we)
             {
@@ -425,6 +429,7 @@ namespace WooCommerceNET
 
         public virtual T DeserializeJSon<T>(string jsonString)
         {
+            //Console.WriteLine(jsonString);
             if (jsonDeseFilter != null)
                 jsonString = jsonDeseFilter.Invoke(jsonString);
 
@@ -453,6 +458,7 @@ namespace WooCommerceNET
 
                 DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(T), settings);
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonString));
+                //Console.WriteLine(jsonString);
                 T obj = (T)ser.ReadObject(stream);
                 stream.Dispose();
                 return obj;
