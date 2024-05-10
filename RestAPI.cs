@@ -282,7 +282,7 @@ namespace WooCommerceNET
                     webResponseFilter.Invoke((HttpWebResponse)wr);
 
                 var stringStream = await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
-                //Console.WriteLine(stringStream);
+               // Console.WriteLine(stringStream);
                 return stringStream;
 
                 //return await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);

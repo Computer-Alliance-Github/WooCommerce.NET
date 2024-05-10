@@ -445,6 +445,14 @@ namespace WooCommerceNET.WooCommerce.v3
         [DataMember(EmitDefaultValue = false)]
         public List<v2.ProductMeta> meta_data { get; set; }
 
+
+        /// <summary>
+        /// List of locations
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public List<Location> locations { get; set; }
+
+
         /// <summary>
         /// Container for error information, if any
         /// </summary>
@@ -597,6 +605,36 @@ namespace WooCommerceNET.WooCommerce.v3
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public bool? verified { get; set; }
+    }
+
+    [DataContract]
+    public class Location
+    {
+        /// <summary>
+        /// Location ID
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public int? id { get; set; }
+
+        /// <summary>
+        /// Location name. 
+        /// read-only
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public string name { get; set; }
+
+        /// <summary>
+        /// location slug. 
+        /// read-only
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public string slug { get; set; }
+
+        /// <summary>
+        /// Stock quantity
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public string quantity { get; set; }
     }
 
     [DataContract]
