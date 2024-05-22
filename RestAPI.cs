@@ -236,10 +236,10 @@ namespace WooCommerceNET
                 {
                     httpWebRequest.ContentType = "application/json";
 
-                    //string jsonStringTest = SerializeJSon(requestBody);
-                    //Console.WriteLine("BEGIN");
-                    //Console.WriteLine(jsonStringTest);
-                    //Console.WriteLine("END");
+                    string jsonStringTest = SerializeJSon(requestBody);
+                    Console.WriteLine("BEGIN");
+                    Console.WriteLine(jsonStringTest);
+                    Console.WriteLine("END");
                     var buffer = Encoding.UTF8.GetBytes(SerializeJSon(requestBody));
                     using (Stream dataStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
                     {
