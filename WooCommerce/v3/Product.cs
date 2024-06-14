@@ -454,6 +454,13 @@ namespace WooCommerceNET.WooCommerce.v3
 
 
         /// <summary>
+        /// For the ca_specifications html tab
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public string ca_specifications { get; set; }
+
+
+        /// <summary>
         /// Container for error information, if any
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
