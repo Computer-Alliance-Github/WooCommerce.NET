@@ -223,7 +223,7 @@ namespace WooCommerceNET
                 // start the stream immediately
                 httpWebRequest.Method = method.ToString();
                 httpWebRequest.AllowReadStreamBuffering = false;
-                
+
                 if (webRequestFilter != null)
                     webRequestFilter.Invoke(httpWebRequest);
 
@@ -287,7 +287,9 @@ namespace WooCommerceNET
                     webResponseFilter.Invoke((HttpWebResponse)wr);
 
                 var stringStream = await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
-               // Console.WriteLine(stringStream);
+                Console.WriteLine("BEGIN");
+                Console.WriteLine(stringStream);
+                Console.WriteLine("END");
                 return stringStream;
 
                 //return await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
@@ -348,7 +350,7 @@ namespace WooCommerceNET
                     return endpoint + "?" + requestParms.TrimEnd('&');
                 }
             }
-            
+
             Dictionary<string, string> dic = new Dictionary<string, string>();
             dic.Add("oauth_consumer_key", wc_key);
 
@@ -376,7 +378,7 @@ namespace WooCommerceNET
                 dic.Add("oauth_signature", Common.GetSHA256(wc_secret + "&" + oauth_token_secret, base_request_uri));
             else
                 dic.Add("oauth_signature", Common.GetSHA256(wc_secret, base_request_uri));
-            
+
             string parmstr = string.Empty;
             foreach (var parm in dic)
                 parmstr += parm.Key + "=" + Uri.EscapeDataString(parm.Value) + "&";
@@ -434,7 +436,7 @@ namespace WooCommerceNET
 
         public virtual T DeserializeJSon<T>(string jsonString)
         {
-           // Console.WriteLine(jsonString);
+            // Console.WriteLine(jsonString);
             if (jsonDeseFilter != null)
                 jsonString = jsonDeseFilter.Invoke(jsonString);
 
