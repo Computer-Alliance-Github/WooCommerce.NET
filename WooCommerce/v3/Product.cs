@@ -121,7 +121,7 @@ namespace WooCommerceNET.WooCommerce.v3
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public string sku { get; set; }
-        
+
         [DataMember(EmitDefaultValue = false, Name = "price")]
         protected object priceValue { get; set; }
         /// <summary>
@@ -129,14 +129,14 @@ namespace WooCommerceNET.WooCommerce.v3
         /// read-only
         /// </summary>
         public decimal? price { get; set; }
-        
+
         [DataMember(EmitDefaultValue = false, Name = "regular_price")]
         protected object regular_priceValue { get; set; }
         /// <summary>
         /// Product regular price.
         /// </summary>
         public decimal? regular_price { get; set; }
-        
+
         [DataMember(EmitDefaultValue = false, Name = "sale_price")]
         protected object sale_priceValue { get; set; }
         /// <summary>
@@ -453,11 +453,60 @@ namespace WooCommerceNET.WooCommerce.v3
         public List<Location> locations { get; set; }
 
 
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
+        /// <summary>
+        /// Min Stock quantity.
+        /// </summary>
+        public int? min_quantity { get; set; }
+
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
+        /// <summary>
+        /// Max Stock quantity.
+        /// </summary>
+        public string max_quantity { get; set; }
+
+
+        [DataMember(EmitDefaultValue = false, IsRequired = false)]
+        /// <summary>
+        /// group_of_quantity
+        /// </summary>
+        public int? group_of_quantity { get; set; }
+
+
+        [DataMember(EmitDefaultValue = false)]
+        /// <summary>
+        /// exclude_order_quantity_value_rules
+        /// </summary>
+        public string exclude_order_quantity_value_rules { get; set; }
+
+
+        [DataMember(EmitDefaultValue = false)]
+        /// <summary>
+        /// exclude_category_quantity_rules
+        /// </summary>
+        public string exclude_category_quantity_rules { get; set; }
+
+        //[DataMember(EmitDefaultValue = false)]
+        ///// <summary>
+        ///// combine_variations
+        ///// </summary>
+        //public string combine_variations { get; set; }
+
+
+
         /// <summary>
         /// For the ca_specifications html tab
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public string ca_specifications { get; set; }
+
+
+        /// <summary>
+        /// For the CA System Builder compatibility
+        /// should map to the product attributes
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public List<SystemBuilderData> ca_system_builder_data { get; set; }
 
 
         /// <summary>
@@ -478,7 +527,7 @@ namespace WooCommerceNET.WooCommerce.v3
 
     [DataContract]
     public class ProductTagLine : v2.ProductTagLine { }
-    
+
     [DataContract]
     public class ProductImage
     {
@@ -606,12 +655,27 @@ namespace WooCommerceNET.WooCommerce.v3
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public int? rating { get; set; }
-        
+
         /// <summary>
         /// Shows if the reviewer bought the product or not. 
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public bool? verified { get; set; }
+    }
+
+    [DataContract]
+    public class SystemBuilderData
+    {
+        [DataMember(EmitDefaultValue = false)]
+        public string attribute_name { get; set; }
+        // public string show_in_system_builder { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public bool show_in_system_builder { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public string connection_sex { get; set; }
+
     }
 
     [DataContract]

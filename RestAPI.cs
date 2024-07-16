@@ -19,6 +19,8 @@ namespace WooCommerceNET
         protected string wc_secret = "";
         //private bool wc_Proxy = false;
 
+        protected bool debug = false; //true; //false; // true;
+
         protected bool AuthorizedHeader { get; set; }
 
         protected Func<string, string> jsonSeFilter;
@@ -224,6 +226,9 @@ namespace WooCommerceNET
                 httpWebRequest.Method = method.ToString();
                 httpWebRequest.AllowReadStreamBuffering = false;
 
+                httpWebRequest.ServerCertificateValidationCallback = (message, cert, chain, errors) => { return true; };
+
+
                 if (webRequestFilter != null)
                     webRequestFilter.Invoke(httpWebRequest);
 
@@ -236,10 +241,14 @@ namespace WooCommerceNET
                 {
                     httpWebRequest.ContentType = "application/json";
 
-                    string jsonStringTest = SerializeJSon(requestBody);
-                    Console.WriteLine("BEGIN");
-                    Console.WriteLine(jsonStringTest);
-                    Console.WriteLine("END");
+                    if (debug)
+                    {
+                        string jsonStringTest = SerializeJSon(requestBody);
+                        Console.WriteLine($"BEGIN {endpoint}");
+                        Console.WriteLine(jsonStringTest);
+                        Console.WriteLine($"END {endpoint}");
+                    }
+
                     var buffer = Encoding.UTF8.GetBytes(SerializeJSon(requestBody));
                     using (Stream dataStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
                     {
@@ -287,9 +296,12 @@ namespace WooCommerceNET
                     webResponseFilter.Invoke((HttpWebResponse)wr);
 
                 var stringStream = await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
-                Console.WriteLine("BEGIN");
-                Console.WriteLine(stringStream);
-                Console.WriteLine("END");
+                if (debug)
+                {
+                    Console.WriteLine($"BEGIN {endpoint}");
+                    Console.WriteLine(stringStream);
+                    Console.WriteLine($"END {endpoint}");
+                }
                 return stringStream;
 
                 //return await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);

@@ -167,7 +167,6 @@ namespace WooCommerceNET.Base
 
         public virtual async Task<T> Update(ulong id, T item, Dictionary<string, string> parms = null)
         {
-            Console.WriteLine($"{item}");
             return API.DeserializeJSon<T>(await API.PostRestful(APIEndpoint + "/" + id.ToString(), item, parms).ConfigureAwait(false));
         }
 
