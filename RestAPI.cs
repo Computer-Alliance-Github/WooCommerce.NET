@@ -19,6 +19,8 @@ namespace WooCommerceNET
         protected string wc_secret = "";
         //private bool wc_Proxy = false;
 
+        protected bool debug = false; //true; //false; // true;
+
         protected bool AuthorizedHeader { get; set; }
 
         protected Func<string, string> jsonSeFilter;
@@ -223,7 +225,10 @@ namespace WooCommerceNET
                 // start the stream immediately
                 httpWebRequest.Method = method.ToString();
                 httpWebRequest.AllowReadStreamBuffering = false;
-                
+
+                httpWebRequest.ServerCertificateValidationCallback = (message, cert, chain, errors) => { return true; };
+
+
                 if (webRequestFilter != null)
                     webRequestFilter.Invoke(httpWebRequest);
 
@@ -235,6 +240,15 @@ namespace WooCommerceNET
                 if (requestBody != null && requestBody.GetType() != typeof(string))
                 {
                     httpWebRequest.ContentType = "application/json";
+
+                    if (debug)
+                    {
+                        string jsonStringTest = SerializeJSon(requestBody);
+                        Console.WriteLine($"BEGIN {endpoint}");
+                        Console.WriteLine(jsonStringTest);
+                        Console.WriteLine($"END {endpoint}");
+                    }
+
                     var buffer = Encoding.UTF8.GetBytes(SerializeJSon(requestBody));
                     using (Stream dataStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false))
                     {
@@ -281,7 +295,16 @@ namespace WooCommerceNET
                 if (webResponseFilter != null)
                     webResponseFilter.Invoke((HttpWebResponse)wr);
 
-                return await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
+                var stringStream = await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
+                if (debug)
+                {
+                    Console.WriteLine($"BEGIN {endpoint}");
+                    Console.WriteLine(stringStream);
+                    Console.WriteLine($"END {endpoint}");
+                }
+                return stringStream;
+
+                //return await GetStreamContent(wr.GetResponseStream(), wr.ContentType.Contains("=") ? wr.ContentType.Split('=')[1] : "UTF-8").ConfigureAwait(false);
             }
             catch (WebException we)
             {
@@ -339,7 +362,7 @@ namespace WooCommerceNET
                     return endpoint + "?" + requestParms.TrimEnd('&');
                 }
             }
-            
+
             Dictionary<string, string> dic = new Dictionary<string, string>();
             dic.Add("oauth_consumer_key", wc_key);
 
@@ -367,7 +390,7 @@ namespace WooCommerceNET
                 dic.Add("oauth_signature", Common.GetSHA256(wc_secret + "&" + oauth_token_secret, base_request_uri));
             else
                 dic.Add("oauth_signature", Common.GetSHA256(wc_secret, base_request_uri));
-            
+
             string parmstr = string.Empty;
             foreach (var parm in dic)
                 parmstr += parm.Key + "=" + Uri.EscapeDataString(parm.Value) + "&";
@@ -425,6 +448,7 @@ namespace WooCommerceNET
 
         public virtual T DeserializeJSon<T>(string jsonString)
         {
+            // Console.WriteLine(jsonString);
             if (jsonDeseFilter != null)
                 jsonString = jsonDeseFilter.Invoke(jsonString);
 
@@ -453,6 +477,7 @@ namespace WooCommerceNET
 
                 DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(T), settings);
                 MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(jsonString));
+                //Console.WriteLine(jsonString);
                 T obj = (T)ser.ReadObject(stream);
                 stream.Dispose();
                 return obj;
