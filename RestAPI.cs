@@ -19,7 +19,7 @@ namespace WooCommerceNET
         protected string wc_secret = "";
         //private bool wc_Proxy = false;
 
-        protected bool debug = false; //true; //false; // true;
+        protected bool debug = false; // false; //true; //false; // true;
 
         protected bool AuthorizedHeader { get; set; }
 
