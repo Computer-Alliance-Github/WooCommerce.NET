@@ -209,14 +209,29 @@ namespace WooCommerceNET
                     if (AuthorizedHeader == true)
                     {
                         if (WCAuthWithJWT && JWT_Object != null)
+                        {
                             httpWebRequest.Headers["Authorization"] = "Bearer " + JWT_Object.token;
+                        }
                         else
+                        {
                             httpWebRequest.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(wc_key + ":" + wc_secret));
+                        }
                     }
                 }
                 else
                 {
-                    httpWebRequest = (HttpWebRequest)WebRequest.Create(wc_url + GetOAuthEndPoint(method.ToString(), endpoint, parms));
+                    if (endpoint.Contains("ca-variations") || endpoint.Contains("wp-json/wp/v2/cpt_iconic_wlv"))
+                    {
+                        string base_url = wc_url;
+                        base_url = base_url.Replace("wp-json/wp/v2/", "");
+                        // Console.WriteLine(base_url);
+                        httpWebRequest = (HttpWebRequest)WebRequest.Create($"{base_url}{endpoint}");
+                    }
+                    else
+                    {
+                        httpWebRequest = (HttpWebRequest)WebRequest.Create(wc_url + GetOAuthEndPoint(method.ToString(), endpoint, parms));
+                    }
+
                     if (Version == APIVersion.WordPressAPIJWT)
                         httpWebRequest.Headers["Authorization"] = "Bearer " + JWT_Object.token;
                 }
