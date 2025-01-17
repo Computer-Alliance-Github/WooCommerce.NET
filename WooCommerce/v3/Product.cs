@@ -272,6 +272,37 @@ namespace WooCommerceNET.WooCommerce.v3
         [DataMember(EmitDefaultValue = false)]
         public string stock_status { get; set; }
 
+        //[DataMember(EmitDefaultValue = false)]
+        //public bool has_options { get; set; }
+
+        //[DataMember(EmitDefaultValue = false)]
+        //public string post_password { get; set; }
+
+        //[DataMember(EmitDefaultValue = false)]
+        //public string global_unique_id { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public bool composite_virtual { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public string composite_layout { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public string composite_add_to_cart_form_location { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public bool composite_editable_in_cart { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public string composite_sold_individually_context { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public string composite_shop_price_calc { get; set; }
+
+        [DataMember(EmitDefaultValue = false)]
+        public List<CompositeComponent> composite_components { get; set; }
+
+
         /// <summary>
         /// If managing stock, this controls if backorders are allowed. Options: no, notify and yes. Default is no.
         /// </summary>
@@ -509,6 +540,7 @@ namespace WooCommerceNET.WooCommerce.v3
         public List<SystemBuilderData> ca_system_builder_data { get; set; }
 
 
+
         /// <summary>
         /// Container for error information, if any
         /// </summary>
@@ -675,6 +707,69 @@ namespace WooCommerceNET.WooCommerce.v3
 
         [DataMember(EmitDefaultValue = false)]
         public string connection_sex { get; set; }
+
+    }
+
+    public class CompositeComponent
+    {
+        [DataMember(EmitDefaultValue = false)]
+        public string id { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string title { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string description { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string query_type { get; set; }
+
+        //"query_ids": [141083, 141079],
+        [DataMember(EmitDefaultValue = false)]
+        public string default_option_id { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string thumbnail_id { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string thumbnail_src { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public int quantity_min { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public int quantity_max { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool priced_individually { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool shipped_individually { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool optional { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string discount { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string options_style { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string pagination_style { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string display_prices { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool show_sorting_options { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool show_filtering_options { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        //"attribute_filter_ids": [],
+        public string select_action { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool product_title_visible { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool product_descr_visible { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool product_price_visible { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool product_thumb_visible { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool subtotal_visible_product { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool subtotal_visible_cart { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool subtotal_visible_orders { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool how_byo_option { get; set; }
+        //"ca_system_builder_attribute_filters": []
 
     }
 
