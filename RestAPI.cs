@@ -19,13 +19,14 @@ namespace WooCommerceNET
         protected string wc_secret = "";
         //private bool wc_Proxy = false;
 
-        protected bool debug = false; //true; //false; // true;
         protected bool AuthorizedHeader { get; set; }
 
         protected Func<string, string> jsonSeFilter;
         protected Func<string, string> jsonDeseFilter;
         protected Action<HttpWebRequest> webRequestFilter;
         protected Action<HttpWebResponse> webResponseFilter;
+
+        public bool debug { get; set; }
 
         /// <summary>
         /// For Wordpress REST API with OAuth 1.0 ONLY
@@ -202,9 +203,17 @@ namespace WooCommerceNET
                     //Url should be passed to RestAPI as WooCommerce Rest API url, e.g.: https://mystore.com/wp-json/wc/v3
                     //Endpoint should be starting with wp-json
                     if (endpoint.StartsWith("wp-json"))
+                    {
                         httpWebRequest = (HttpWebRequest)WebRequest.Create(new Uri(new Uri($"https://{new Uri(wc_url).Host}"), GetOAuthEndPoint(method.ToString(), endpoint, parms)));
+                    }
                     else
+                    {
                         httpWebRequest = (HttpWebRequest)WebRequest.Create(wc_url + GetOAuthEndPoint(method.ToString(), endpoint, parms));
+                    }
+                    if (debug)
+                    {
+                        Console.WriteLine($"{httpWebRequest.RequestUri}");
+                    }
 
                     if (AuthorizedHeader == true)
                     {
@@ -233,7 +242,9 @@ namespace WooCommerceNET
                     }
 
                     if (Version == APIVersion.WordPressAPIJWT)
+                    {
                         httpWebRequest.Headers["Authorization"] = "Bearer " + JWT_Object.token;
+                    }
                 }
 
                 // start the stream immediately
@@ -244,7 +255,9 @@ namespace WooCommerceNET
 
 
                 if (webRequestFilter != null)
+                {
                     webRequestFilter.Invoke(httpWebRequest);
+                }
 
                 //if (wc_Proxy)
                 //    httpWebRequest.Proxy.Credentials = CredentialCache.DefaultCredentials;
